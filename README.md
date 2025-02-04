@@ -18,3 +18,7 @@ py manage.py migrate
 
 ->> run the server
 py manage.py runserver
+
+
+->> create the username for admin panel
+py manage.py createsuperuser 
