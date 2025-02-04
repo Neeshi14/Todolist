@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        .completed {
+            text-decoration: line-through;
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>My To-Do List</h1>
+
+    <!-- Add New Task -->
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="task_name" placeholder="Enter a new task" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Display Task List -->
+    <ul>
+        {% for task in tasks %}
+            <li class="{% if task.completed %}completed{% endif %}">
+                <form method="POST" action="{% url 'toggle_task' task.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="checkbox" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+                </form>
+                {{ task.name }}
+                <form method="POST" action="{% url 'delete_task' task.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
